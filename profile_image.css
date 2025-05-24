@@ -1,0 +1,11 @@
+.image-placeholder {
+    background-image: url('images/logo_terapia_cerebro.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+    box-shadow: 0 10px 30px rgba(26, 75, 140, 0.2);
+}
+
+.image-placeholder i {
+    display: none;
+}
