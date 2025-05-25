@@ -1,0 +1,94 @@
+.depoimentos {
+    position: relative;
+    color: white;
+    padding: 80px 0;
+}
+
+.depoimentos-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+    z-index: 1;
+}
+
+.depoimentos .container {
+    position: relative;
+    z-index: 2;
+}
+
+.depoimentos-slider {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.depoimento {
+    position: relative;
+    width: 100%;
+}
+
+.depoimento-content {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius);
+    padding: 40px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+.quote-icon {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 2rem;
+    color: rgba(255, 255, 255, 0.2);
+}
+
+.depoimento-content p {
+    font-style: italic;
+    margin-bottom: 30px;
+    padding-left: 20px;
+    color: white;
+}
+
+.depoimento-author {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.author-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+.author-info h4 {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.stars {
+    color: var(--warning-color);
+    font-size: 0.9rem;
+}
+
+/* Removida a navegação do carrossel para exibir todos os depoimentos de uma vez */
