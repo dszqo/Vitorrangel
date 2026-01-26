@@ -6,16 +6,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const mobileMenuIcon = document.querySelector('.mobile-menu-icon');
     const nav = document.querySelector('nav');
     const faqItems = document.querySelectorAll('.faq-item');
-    const depoimentoSlider = document.querySelector('.depoimentos-slider');
-    const depoimentos = document.querySelectorAll('.depoimento');
-    const navPrev = document.querySelector('.nav-prev');
-    const navNext = document.querySelector('.nav-next');
-    const dotsContainer = document.querySelector('.nav-dots');
     const cursor = document.querySelector('.cursor');
     const cursorFollower = document.querySelector('.cursor-follower');
     const animateElements = document.querySelectorAll('.animate-on-scroll');
     
-    let currentSlide = 0;
     let isScrolling = false;
     
     // Header scroll effect
@@ -67,69 +61,156 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Testimonial slider - Gerar dots dinamicamente
-    // Limpar dots existentes
-    dotsContainer.innerHTML = '';
+    // ============================================
+    // CARROSSEL DE DEPOIMENTOS
+    // ============================================
     
-    // Criar dots baseados no número de depoimentos
-    depoimentos.forEach((_, i) => {
-        const dot = document.createElement('div');
-        dot.className = 'dot';
-        if (i === 0) dot.classList.add('active');
-        dotsContainer.appendChild(dot);
-    });
+    const depoimentoSlider = document.querySelector('.depoimentos-slider');
+    const depoimentos = document.querySelectorAll('.depoimento');
+    const dotsContainer = document.getElementById('carousel-dots');
     
-    // Atualizar referência aos dots após criá-los dinamicamente
-    const dots = document.querySelectorAll('.dot');
+    let currentSlide = 0;
+    let slidesPerView = getSlidesPerView();
+    let totalSlides = depoimentos.length;
+    let maxSlide = Math.ceil(totalSlides / slidesPerView) - 1;
+    let slideInterval;
     
-    function showSlide(index) {
+    // Determinar quantos slides mostrar por vez baseado na largura da tela
+    function getSlidesPerView() {
+        if (window.innerWidth <= 768) {
+            return 1;
+        } else if (window.innerWidth <= 1024) {
+            return 2;
+        } else {
+            return 3;
+        }
+    }
+    
+    // Criar dots de navegação
+    function createDots() {
+        if (!dotsContainer) return;
+        
+        dotsContainer.innerHTML = '';
+        const numDots = Math.ceil(totalSlides / slidesPerView);
+        
+        for (let i = 0; i < numDots; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'carousel-dot';
+            if (i === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(i));
+            dotsContainer.appendChild(dot);
+        }
+    }
+    
+    // Atualizar dots ativos
+    function updateDots() {
+        const dots = document.querySelectorAll('.carousel-dot');
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === currentSlide);
+        });
+    }
+    
+    // Ir para um slide específico
+    function goToSlide(index) {
+        maxSlide = Math.ceil(totalSlides / slidesPerView) - 1;
+        
         if (index < 0) {
-            currentSlide = depoimentos.length - 1;
-        } else if (index >= depoimentos.length) {
+            currentSlide = maxSlide;
+        } else if (index > maxSlide) {
             currentSlide = 0;
         } else {
             currentSlide = index;
         }
         
-        // Mover o slider para mostrar o slide atual
-        depoimentoSlider.style.transform = `translateX(-${currentSlide * 100}%)`;
+        // Cada slide ocupa (100/slidesPerView)% do container
+        // Para mover, multiplicamos pelo número de slides que queremos pular
+        const offset = currentSlide * 100;
         
-        // Update dots
-        dots.forEach((dot, i) => {
-            dot.classList.toggle('active', i === currentSlide);
-        });
+        if (depoimentoSlider) {
+            depoimentoSlider.style.transform = `translateX(-${offset}%)`;
+        }
         
-        console.log("Mostrando slide:", currentSlide);
+        updateDots();
     }
     
-    navPrev.addEventListener('click', () => {
-        showSlide(currentSlide - 1);
-    });
+    // Função global para mover o carrossel
+    window.moveCarousel = function(direction) {
+        goToSlide(currentSlide + direction);
+        resetAutoSlide();
+    };
     
-    navNext.addEventListener('click', () => {
-        showSlide(currentSlide + 1);
-    });
-    
-    dots.forEach((dot, i) => {
-        dot.addEventListener('click', () => {
-            showSlide(i);
-        });
-    });
-    
-    // Auto slide
-    let slideInterval = setInterval(() => {
-        showSlide(currentSlide + 1);
-    }, 5000);
-    
-    depoimentoSlider.addEventListener('mouseenter', () => {
-        clearInterval(slideInterval);
-    });
-    
-    depoimentoSlider.addEventListener('mouseleave', () => {
+    // Auto-slide
+    function startAutoSlide() {
         slideInterval = setInterval(() => {
-            showSlide(currentSlide + 1);
+            goToSlide(currentSlide + 1);
         }, 5000);
+    }
+    
+    function resetAutoSlide() {
+        clearInterval(slideInterval);
+        startAutoSlide();
+    }
+    
+    // Pausar auto-slide no hover
+    if (depoimentoSlider) {
+        depoimentoSlider.addEventListener('mouseenter', () => {
+            clearInterval(slideInterval);
+        });
+        
+        depoimentoSlider.addEventListener('mouseleave', () => {
+            startAutoSlide();
+        });
+    }
+    
+    // Atualizar ao redimensionar a janela
+    window.addEventListener('resize', () => {
+        const newSlidesPerView = getSlidesPerView();
+        if (newSlidesPerView !== slidesPerView) {
+            slidesPerView = newSlidesPerView;
+            maxSlide = Math.ceil(totalSlides / slidesPerView) - 1;
+            currentSlide = 0;
+            createDots();
+            goToSlide(0);
+        }
     });
+    
+    // Inicializar carrossel
+    createDots();
+    startAutoSlide();
+    
+    // Suporte a swipe em dispositivos touch
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    if (depoimentoSlider) {
+        depoimentoSlider.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        depoimentoSlider.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+    }
+    
+    function handleSwipe() {
+        const swipeThreshold = 50;
+        const diff = touchStartX - touchEndX;
+        
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0) {
+                // Swipe left - próximo slide
+                moveCarousel(1);
+            } else {
+                // Swipe right - slide anterior
+                moveCarousel(-1);
+            }
+        }
+    }
+    
+    // ============================================
+    // FIM DO CARROSSEL
+    // ============================================
     
     // Custom cursor
     if (window.innerWidth > 992) {

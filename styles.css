@@ -1229,3 +1229,58 @@ footer {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+
+/* Estilos para o botão WhatsApp centralizado na seção de contato */
+.contato-cta-centered {
+    text-align: center;
+    margin-top: 2.5rem;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+}
+
+.btn-whatsapp-large {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px 50px;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 50px;
+    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+    transition: all 0.3s ease;
+}
+
+.btn-whatsapp-large:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(37, 211, 102, 0.5);
+    background: linear-gradient(135deg, #2EE370, #159A8A);
+}
+
+.btn-whatsapp-large i {
+    font-size: 1.5rem;
+}
+
+.whatsapp-hint {
+    margin-top: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.95rem;
+    margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+    .btn-whatsapp-large {
+        padding: 16px 35px;
+        font-size: 1.1rem;
+    }
+    
+    .btn-whatsapp-large i {
+        font-size: 1.3rem;
+    }
+}
