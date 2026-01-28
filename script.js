@@ -1,344 +1,267 @@
-// Script para funcionalidades interativas do site
+// Script principal do site Vitor Rangel Terapeuta
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Variáveis
-    const header = document.querySelector('header');
+    
+    // ============================================
+    // MENU MOBILE
+    // ============================================
+    
     const mobileMenuIcon = document.querySelector('.mobile-menu-icon');
     const nav = document.querySelector('nav');
-    const faqItems = document.querySelectorAll('.faq-item');
-    const cursor = document.querySelector('.cursor');
-    const cursorFollower = document.querySelector('.cursor-follower');
-    const animateElements = document.querySelectorAll('.animate-on-scroll');
     
-    let isScrolling = false;
+    if (mobileMenuIcon) {
+        mobileMenuIcon.addEventListener('click', function() {
+            this.classList.toggle('active');
+            nav.classList.toggle('active');
+        });
+    }
     
-    // Header scroll effect
+    // Fechar menu ao clicar em um link
+    document.querySelectorAll('nav a').forEach(link => {
+        link.addEventListener('click', () => {
+            if (mobileMenuIcon) {
+                mobileMenuIcon.classList.remove('active');
+            }
+            if (nav) {
+                nav.classList.remove('active');
+            }
+        });
+    });
+    
+    // ============================================
+    // HEADER SCROLL
+    // ============================================
+    
+    const header = document.querySelector('header');
+    
     window.addEventListener('scroll', function() {
         if (window.scrollY > 50) {
             header.classList.add('scrolled');
         } else {
             header.classList.remove('scrolled');
         }
-        
-        // Animate elements on scroll
-        if (!isScrolling) {
-            isScrolling = true;
-            setTimeout(checkAnimateElements, 100);
-        }
     });
     
-    // Mobile menu toggle
-    mobileMenuIcon.addEventListener('click', function() {
-        nav.classList.toggle('active');
-        
-        const spans = this.querySelectorAll('span');
-        if (nav.classList.contains('active')) {
-            spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-            spans[1].style.opacity = '0';
-            spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
-        } else {
-            spans[0].style.transform = 'none';
-            spans[1].style.opacity = '1';
-            spans[2].style.transform = 'none';
-        }
-    });
+    // ============================================
+    // FAQ ACCORDION
+    // ============================================
     
-    // FAQ accordion
+    const faqItems = document.querySelectorAll('.faq-item');
+    
     faqItems.forEach(item => {
         const question = item.querySelector('.faq-question');
+        
         question.addEventListener('click', () => {
-            const isActive = item.classList.contains('active');
-            
-            // Close all items
-            faqItems.forEach(faqItem => {
-                faqItem.classList.remove('active');
+            // Fechar outros itens
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item && otherItem.classList.contains('active')) {
+                    otherItem.classList.remove('active');
+                }
             });
             
-            // Open clicked item if it wasn't active
-            if (!isActive) {
-                item.classList.add('active');
-            }
+            // Toggle item atual
+            item.classList.toggle('active');
         });
     });
     
     // ============================================
-    // CARROSSEL DE DEPOIMENTOS
+    // CARROSSEL HORIZONTAL DE DEPOIMENTOS
     // ============================================
     
-    const depoimentoSlider = document.querySelector('.depoimentos-slider');
+    const slider = document.querySelector('.depoimentos-slider');
     const depoimentos = document.querySelectorAll('.depoimento');
     const dotsContainer = document.getElementById('carousel-dots');
+    const prevBtn = document.querySelector('.carousel-btn.prev');
+    const nextBtn = document.querySelector('.carousel-btn.next');
     
-    let currentSlide = 0;
-    let slidesPerView = getSlidesPerView();
-    let totalSlides = depoimentos.length;
-    let maxSlide = Math.ceil(totalSlides / slidesPerView) - 1;
-    let slideInterval;
-    
-    // Determinar quantos slides mostrar por vez baseado na largura da tela
-    function getSlidesPerView() {
-        if (window.innerWidth <= 768) {
-            return 1;
-        } else if (window.innerWidth <= 1024) {
-            return 2;
-        } else {
+    if (slider && depoimentos.length > 0) {
+        let currentIndex = 0;
+        let autoSlideInterval;
+        
+        // Função para obter slides por view
+        function getSlidesPerView() {
+            const width = window.innerWidth;
+            if (width <= 768) return 1;
+            if (width <= 1024) return 2;
             return 3;
         }
-    }
-    
-    // Criar dots de navegação
-    function createDots() {
-        if (!dotsContainer) return;
         
-        dotsContainer.innerHTML = '';
-        const numDots = Math.ceil(totalSlides / slidesPerView);
-        
-        for (let i = 0; i < numDots; i++) {
-            const dot = document.createElement('div');
-            dot.className = 'carousel-dot';
-            if (i === 0) dot.classList.add('active');
-            dot.addEventListener('click', () => goToSlide(i));
-            dotsContainer.appendChild(dot);
+        // Função para rolar o carrossel
+        function scrollToIndex(index) {
+            const slidesPerView = getSlidesPerView();
+            const totalPages = Math.ceil(depoimentos.length / slidesPerView);
+            
+            // Garantir que o índice está dentro dos limites
+            if (index < 0) index = totalPages - 1;
+            if (index >= totalPages) index = 0;
+            
+            currentIndex = index;
+            
+            // Calcular a posição de scroll
+            const scrollAmount = (index * (depoimentos[0].offsetWidth + 25));
+            
+            slider.scrollTo({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+            
+            updateDots();
         }
-    }
-    
-    // Atualizar dots ativos
-    function updateDots() {
-        const dots = document.querySelectorAll('.carousel-dot');
-        dots.forEach((dot, i) => {
-            dot.classList.toggle('active', i === currentSlide);
+        
+        // Atualizar indicadores (dots)
+        function updateDots() {
+            if (!dotsContainer) return;
+            
+            const slidesPerView = getSlidesPerView();
+            const totalPages = Math.ceil(depoimentos.length / slidesPerView);
+            
+            const dots = dotsContainer.querySelectorAll('.carousel-dot');
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentIndex);
+            });
+        }
+        
+        // Criar dots
+        function createDots() {
+            if (!dotsContainer) return;
+            dotsContainer.innerHTML = '';
+            
+            const slidesPerView = getSlidesPerView();
+            const totalPages = Math.ceil(depoimentos.length / slidesPerView);
+            
+            for (let i = 0; i < totalPages; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+                dot.addEventListener('click', () => {
+                    scrollToIndex(i);
+                    resetAutoSlide();
+                });
+                dotsContainer.appendChild(dot);
+            }
+        }
+        
+        // Próximo slide
+        function nextSlide() {
+            scrollToIndex(currentIndex + 1);
+        }
+        
+        // Slide anterior
+        function prevSlide() {
+            scrollToIndex(currentIndex - 1);
+        }
+        
+        // Auto slide
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(nextSlide, 5000);
+        }
+        
+        function stopAutoSlide() {
+            clearInterval(autoSlideInterval);
+        }
+        
+        function resetAutoSlide() {
+            stopAutoSlide();
+            startAutoSlide();
+        }
+        
+        // Event listeners dos botões
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                nextSlide();
+                resetAutoSlide();
+            });
+        }
+        
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                prevSlide();
+                resetAutoSlide();
+            });
+        }
+        
+        // Função global para onclick
+        window.moveCarousel = function(direction) {
+            if (direction > 0) {
+                nextSlide();
+            } else {
+                prevSlide();
+            }
+            resetAutoSlide();
+        };
+        
+        // Pausar no hover
+        slider.addEventListener('mouseenter', stopAutoSlide);
+        slider.addEventListener('mouseleave', startAutoSlide);
+        
+        // Touch/Swipe
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        slider.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            stopAutoSlide();
+        }, { passive: true });
+        
+        slider.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchStartX - touchEndX;
+            
+            if (diff > 50) {
+                nextSlide();
+            } else if (diff < -50) {
+                prevSlide();
+            }
+            
+            startAutoSlide();
+        }, { passive: true });
+        
+        // Resize handler
+        window.addEventListener('resize', () => {
+            createDots();
         });
-    }
-    
-    // Ir para um slide específico
-    function goToSlide(index) {
-        maxSlide = Math.ceil(totalSlides / slidesPerView) - 1;
         
-        if (index < 0) {
-            currentSlide = maxSlide;
-        } else if (index > maxSlide) {
-            currentSlide = 0;
-        } else {
-            currentSlide = index;
-        }
-        
-        // Cada slide ocupa (100/slidesPerView)% do container
-        // Para mover, multiplicamos pelo número de slides que queremos pular
-        const offset = currentSlide * 100;
-        
-        if (depoimentoSlider) {
-            depoimentoSlider.style.transform = `translateX(-${offset}%)`;
-        }
-        
+        // Inicializar
+        createDots();
         updateDots();
-    }
-    
-    // Função global para mover o carrossel
-    window.moveCarousel = function(direction) {
-        goToSlide(currentSlide + direction);
-        resetAutoSlide();
-    };
-    
-    // Auto-slide
-    function startAutoSlide() {
-        slideInterval = setInterval(() => {
-            goToSlide(currentSlide + 1);
-        }, 5000);
-    }
-    
-    function resetAutoSlide() {
-        clearInterval(slideInterval);
         startAutoSlide();
     }
     
-    // Pausar auto-slide no hover
-    if (depoimentoSlider) {
-        depoimentoSlider.addEventListener('mouseenter', () => {
-            clearInterval(slideInterval);
-        });
-        
-        depoimentoSlider.addEventListener('mouseleave', () => {
-            startAutoSlide();
-        });
-    }
-    
-    // Atualizar ao redimensionar a janela
-    window.addEventListener('resize', () => {
-        const newSlidesPerView = getSlidesPerView();
-        if (newSlidesPerView !== slidesPerView) {
-            slidesPerView = newSlidesPerView;
-            maxSlide = Math.ceil(totalSlides / slidesPerView) - 1;
-            currentSlide = 0;
-            createDots();
-            goToSlide(0);
-        }
-    });
-    
-    // Inicializar carrossel
-    createDots();
-    startAutoSlide();
-    
-    // Suporte a swipe em dispositivos touch
-    let touchStartX = 0;
-    let touchEndX = 0;
-    
-    if (depoimentoSlider) {
-        depoimentoSlider.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
-        
-        depoimentoSlider.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, { passive: true });
-    }
-    
-    function handleSwipe() {
-        const swipeThreshold = 50;
-        const diff = touchStartX - touchEndX;
-        
-        if (Math.abs(diff) > swipeThreshold) {
-            if (diff > 0) {
-                // Swipe left - próximo slide
-                moveCarousel(1);
-            } else {
-                // Swipe right - slide anterior
-                moveCarousel(-1);
-            }
-        }
-    }
-    
     // ============================================
-    // FIM DO CARROSSEL
+    // ANIMAÇÕES DE SCROLL
     // ============================================
     
-    // Custom cursor
-    if (window.innerWidth > 992) {
-        document.addEventListener('mousemove', (e) => {
-            cursor.style.opacity = '1';
-            cursorFollower.style.opacity = '1';
-            
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
-            
-            cursorFollower.style.left = e.clientX + 'px';
-            cursorFollower.style.top = e.clientY + 'px';
-        });
-        
-        document.addEventListener('mouseout', () => {
-            cursor.style.opacity = '0';
-            cursorFollower.style.opacity = '0';
-        });
-        
-        // Cursor hover effect on links and buttons
-        const hoverElements = document.querySelectorAll('a, button, .faq-question');
-        hoverElements.forEach(element => {
-            element.addEventListener('mouseenter', () => {
-                cursor.style.transform = 'translate(-50%, -50%) scale(1.5)';
-                cursorFollower.style.transform = 'translate(-50%, -50%) scale(1.5)';
-            });
-            
-            element.addEventListener('mouseleave', () => {
-                cursor.style.transform = 'translate(-50%, -50%) scale(1)';
-                cursorFollower.style.transform = 'translate(-50%, -50%) scale(1)';
-            });
-        });
-    } else {
-        cursor.style.display = 'none';
-        cursorFollower.style.display = 'none';
-    }
+    const animateElements = document.querySelectorAll('.animate-on-scroll');
     
-    // Animate elements on scroll
-    function checkAnimateElements() {
-        const triggerBottom = window.innerHeight * 0.8;
-        
-        animateElements.forEach(element => {
-            const elementTop = element.getBoundingClientRect().top;
-            
-            if (elementTop < triggerBottom) {
-                element.classList.add('animate');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animated');
             }
         });
-        
-        isScrolling = false;
-    }
-    
-    // Add animate-on-scroll class to elements
-    document.querySelectorAll('.section-header, .sobre-content, .abordagem-cards, .especialidades, .processo-steps, .processo-cta, .faq-grid, .contato-content').forEach(element => {
-        element.classList.add('animate-on-scroll');
+    }, {
+        threshold: 0.1
     });
     
-    // Check for animations on load
-    checkAnimateElements();
+    animateElements.forEach(el => observer.observe(el));
     
-    // Smooth scroll for anchor links
+    // ============================================
+    // SMOOTH SCROLL
+    // ============================================
+    
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
-            
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-            
-            if (targetElement) {
-                const headerHeight = header.offsetHeight;
-                const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const headerOffset = 80;
+                const elementPosition = target.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
                 
                 window.scrollTo({
-                    top: targetPosition,
+                    top: offsetPosition,
                     behavior: 'smooth'
                 });
-                
-                // Close mobile menu if open
-                if (nav.classList.contains('active')) {
-                    nav.classList.remove('active');
-                    const spans = mobileMenuIcon.querySelectorAll('span');
-                    spans[0].style.transform = 'none';
-                    spans[1].style.opacity = '1';
-                    spans[2].style.transform = 'none';
-                }
             }
         });
     });
-    
-    // Form submission
-    const contactForm = document.getElementById('contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Simulate form submission
-            const submitButton = this.querySelector('button[type="submit"]');
-            const originalText = submitButton.textContent;
-            
-            submitButton.disabled = true;
-            submitButton.textContent = 'Enviando...';
-            
-            setTimeout(() => {
-                // Reset form
-                contactForm.reset();
-                
-                // Show success message
-                const successMessage = document.createElement('div');
-                successMessage.className = 'form-success';
-                successMessage.textContent = 'Mensagem enviada com sucesso! Entraremos em contato em breve.';
-                successMessage.style.color = 'var(--success-color)';
-                successMessage.style.padding = '15px';
-                successMessage.style.marginTop = '20px';
-                successMessage.style.backgroundColor = 'rgba(40, 167, 69, 0.1)';
-                successMessage.style.borderRadius = 'var(--border-radius)';
-                successMessage.style.textAlign = 'center';
-                
-                contactForm.appendChild(successMessage);
-                
-                // Reset button
-                submitButton.disabled = false;
-                submitButton.textContent = originalText;
-                
-                // Remove success message after 5 seconds
-                setTimeout(() => {
-                    successMessage.remove();
-                }, 5000);
-            }, 1500);
-        });
-    }
 });

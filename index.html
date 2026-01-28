@@ -83,8 +83,8 @@
             <div class="sobre-content animate-on-scroll">
                 <div class="sobre-image">
                     <div class="image-container">
-                        <div class="image-placeholder">
-                            <img src="foto_perfil.png" alt="Vitor Rangel - Terapeuta Humanista" class="profile-photo">
+                        <div class="profile-photo">
+                            <img src="foto_perfil.png" alt="Vitor Rangel - Terapeuta Humanista">
                         </div>
                         <div class="image-shape"></div>
                     </div>
@@ -281,9 +281,7 @@
                         </div>
                         <p>Valorizo muito a sua capacidade de escutar e me compreender profundamente. Sinto que você realmente 'está comigo' nas minhas questões, obrigada Dr. Vitor.</p>
                         <div class="depoimento-author">
-                            <div class="author-image">
-                                J
-                            </div>
+                            <div class="author-image">J</div>
                             <div class="author-info">
                                 <h4>Jessica Silveira</h4>
                                 <div class="stars">
@@ -304,9 +302,7 @@
                         </div>
                         <p>Nossa, excelente terapeuta. Vitor é uma pessoa muito legal, ele faz tudo parecer muito confortável e a conversa simplesmente flui. Nada rígido ou estranho, uma conversa que realmente faz você pensar sobre a vida.</p>
                         <div class="depoimento-author">
-                            <div class="author-image">
-                                B
-                            </div>
+                            <div class="author-image">B</div>
                             <div class="author-info">
                                 <h4>Bruno Vasques</h4>
                                 <div class="stars">
@@ -327,9 +323,7 @@
                         </div>
                         <p>Um profissional excepcional com uma abordagem acolhedora, humana e altamente competente. Você pode sentir o cuidado e a dedicação em cada detalhe da terapia. Recomendo de coração para quem procura um terapeuta sério e comprometido.</p>
                         <div class="depoimento-author">
-                            <div class="author-image">
-                                R
-                            </div>
+                            <div class="author-image">R</div>
                             <div class="author-info">
                                 <h4>Raul Medina</h4>
                                 <div class="stars">
@@ -350,9 +344,7 @@
                         </div>
                         <p>A abordagem do Dr. Vitor, baseada em neurociência, me ajudou a entender melhor minhas reações emocionais e a lidar com a ansiedade de forma mais consciente.</p>
                         <div class="depoimento-author">
-                            <div class="author-image">
-                                L
-                            </div>
+                            <div class="author-image">L</div>
                             <div class="author-info">
                                 <h4>Luis Henrique Ferreira</h4>
                                 <div class="stars">
@@ -373,9 +365,7 @@
                         </div>
                         <p>Terapia conduzida com empatia, cuidado e profissionalismo. Um profissional humano e dedicado. Recomendo muito!</p>
                         <div class="depoimento-author">
-                            <div class="author-image">
-                                A
-                            </div>
+                            <div class="author-image">A</div>
                             <div class="author-info">
                                 <h4>Artur Teles</h4>
                                 <div class="stars">
@@ -396,9 +386,7 @@
                         </div>
                         <p>Um profissional excepcional. A terapia é conduzida com muito cuidado, empatia e respeito, proporcionando uma sensação de apoio e segurança em cada sessão. Recomendo muito!</p>
                         <div class="depoimento-author">
-                            <div class="author-image">
-                                R
-                            </div>
+                            <div class="author-image">R</div>
                             <div class="author-info">
                                 <h4>Roseli Medina Santos</h4>
                                 <div class="stars">
@@ -413,12 +401,12 @@
                     </div>
                 </div>
             </div>
-            <div class="carousel-nav">
-                <button class="carousel-btn prev" onclick="moveCarousel(-1)">
+            <div class="carousel-controls">
+                <button class="carousel-btn prev" type="button" onclick="moveCarousel(-1)">
                     <i class="fas fa-chevron-left"></i>
                 </button>
-                <div class="carousel-dots" id="carousel-dots"></div>
-                <button class="carousel-btn next" onclick="moveCarousel(1)">
+                <div id="carousel-dots"></div>
+                <button class="carousel-btn next" type="button" onclick="moveCarousel(1)">
                     <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
@@ -537,7 +525,7 @@
                             </div>
                             <div class="method-details">
                                 <h3>Telefone/WhatsApp</h3>
-                                <p>+55 (11) 95540-0030</p>
+                                <p>+55 (11) 96478-7505</p>
                             </div>
                         </div>
                         <div class="contato-method">
@@ -549,12 +537,21 @@
                                 <p>Atendimento via plataforma segura</p>
                             </div>
                         </div>
+                        <a href="https://instagram.com/vitorlrangel" class="contato-method" target="_blank" style="text-decoration: none; color: inherit;">
+                            <div class="method-icon">
+                                <i class="fab fa-instagram"></i>
+                            </div>
+                            <div class="method-details">
+                                <h3>Instagram</h3>
+                                <p>@vitorlrangel</p>
+                            </div>
+                        </a>
                     </div>
-                    <div class="contato-cta-centered">
-                        <a href="https://wa.me/5511955400030" class="btn-whatsapp-large" target="_blank">
+                    <div class="contato-cta-wrapper">
+                        <p class="whatsapp-text">Clique no botão abaixo para iniciar uma conversa diretamente no WhatsApp</p>
+                        <a href="https://wa.me/5511964787505" class="btn-whatsapp-large" target="_blank">
                             <i class="fab fa-whatsapp"></i> Agende pelo WhatsApp
                         </a>
-                        <p class="whatsapp-hint">Clique para iniciar uma conversa diretamente no WhatsApp</p>
                     </div>
                 </div>
             </div>
@@ -568,7 +565,7 @@
                 <h2>Pronto para começar sua jornada de transformação?</h2>
                 <p>Dê o primeiro passo para o autoconhecimento e bem-estar emocional</p>
                 <div class="cta-buttons">
-                    <a href="https://wa.me/5511955400030" class="btn-primary" target="_blank">
+                    <a href="https://wa.me/5511964787505" class="btn-primary" target="_blank">
                         <i class="fab fa-whatsapp"></i> Agende sua Sessão
                     </a>
                     <a href="#contato" class="btn-secondary">Saiba Mais</a>
@@ -604,14 +601,14 @@
                     <div class="footer-contact">
                         <h4>Contato</h4>
                         <p><i class="fas fa-envelope"></i> vitorlrangel@gmail.com</p>
-                        <p><i class="fas fa-phone-alt"></i> +55 (11) 95540-0030</p>
+                        <p><i class="fas fa-phone-alt"></i> +55 (11) 96478-7505</p>
                         <div class="footer-cta">
                             <a href="#contato" class="btn-primary">Agende sua Sessão</a>
                         </div>
                     </div>
                 </div>
                 <div class="footer-bottom">
-                    <p>&copy; 2026 Terapeuta Vitor Rangel. Todos os direitos reservados.</p>
+                    <p>&copy; 2025 Terapeuta Vitor Rangel. Todos os direitos reservados.</p>
                     <p class="disclaimer">Vitor Rangel é terapeuta humanista, não psicólogo. Não realiza diagnósticos psicológicos, avaliações psicológicas ou procedimentos exclusivos da psicologia.</p>
                 </div>
             </div>

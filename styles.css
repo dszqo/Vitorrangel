@@ -1113,7 +1113,7 @@ footer {
     transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.animate-on-scroll.animate {
+.animate-on-scroll.animated {
     opacity: 1;
     transform: translateY(0);
 }
@@ -1283,4 +1283,65 @@ footer {
     .btn-whatsapp-large i {
         font-size: 1.3rem;
     }
+}
+
+
+/* WhatsApp Button Styles */
+.contato-cta-wrapper {
+    text-align: center;
+    margin-top: 40px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.whatsapp-text {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+.btn-whatsapp-large {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: #25D366;
+    color: white;
+    padding: 18px 40px;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+}
+
+.btn-whatsapp-large:hover {
+    background: #128C7E;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(37, 211, 102, 0.5);
+}
+
+.btn-whatsapp-large i {
+    font-size: 1.5rem;
+}
+
+
+/* Instagram Link Hover */
+.contato-method {
+    transition: all 0.3s ease;
+}
+
+.contato-method:hover {
+    transform: translateX(10px);
+}
+
+.contato-method:hover .method-icon {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #E1306C;
+}
+
+.contato-method:hover .method-details h3 {
+    color: #E1306C !important;
 }
