@@ -1,0 +1,185 @@
+/* Estilos para imagens */
+.hero {
+    background-image: linear-gradient(135deg, rgba(10, 38, 71, 0.85), rgba(26, 75, 140, 0.85)), url('../images/terapia_sessao.webp');
+    background-size: cover;
+    background-position: center;
+}
+
+.image-placeholder {
+    background-image: url('../images/terapeuta_sessao.jpeg');
+    background-size: cover;
+    background-position: center;
+}
+
+.image-placeholder i {
+    display: none;
+}
+
+.abordagem-bg {
+    background-image: linear-gradient(135deg, rgba(26, 75, 140, 0.9), rgba(10, 38, 71, 0.9)), url('../images/consultorio_moderno.jpeg');
+    background-size: cover;
+    background-position: center;
+}
+
+.depoimentos-bg {
+    background-image: linear-gradient(135deg, rgba(26, 75, 140, 0.9), rgba(10, 38, 71, 0.9)), url('../images/consultorio_terapia.jpeg');
+    background-size: cover;
+    background-position: center;
+}
+
+.contato-bg {
+    background-image: linear-gradient(135deg, rgba(26, 75, 140, 0.9), rgba(10, 38, 71, 0.9)), url('../images/consultorio_terapia.jpeg');
+    background-size: cover;
+    background-position: center;
+}
+
+/* Melhorias visuais adicionais */
+.hero-content {
+    animation-delay: 0.5s;
+}
+
+.sobre-features .feature:hover .feature-icon {
+    transform: scale(1.1);
+    background-color: var(--background-dark);
+    box-shadow: 0 5px 15px rgba(26, 75, 140, 0.2);
+}
+
+.card-icon {
+    transition: transform 0.3s ease;
+}
+
+.card:hover .card-icon {
+    transform: translateY(-10px);
+}
+
+.depoimento-content {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.depoimento-content:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.author-image {
+    overflow: hidden;
+    position: relative;
+}
+
+.author-image::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--accent-color), transparent);
+    opacity: 0.3;
+    border-radius: 50%;
+}
+
+.faq-item {
+    transition: transform 0.3s ease;
+}
+
+.faq-item:hover {
+    transform: translateY(-3px);
+}
+
+.faq-item.active {
+    border-left: 3px solid var(--accent-color);
+}
+
+.contato-method:hover .method-icon {
+    background-color: var(--accent-color);
+    color: var(--primary-dark);
+    transform: scale(1.1);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(62, 205, 219, 0.2);
+}
+
+/* Melhorias de acessibilidade */
+:focus {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+/* Melhorias de responsividade */
+@media (max-width: 768px) {
+    .hero {
+        background-position: 70% center;
+    }
+    
+    .image-placeholder {
+        width: 250px;
+        height: 250px;
+    }
+}
+
+/* Animações refinadas */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.btn-primary:hover {
+    animation: pulse 1.5s infinite;
+}
+
+.hero-wave svg {
+    animation: wave 15s linear infinite;
+}
+
+@keyframes wave {
+    0% {
+        transform: translateX(0);
+    }
+    50% {
+        transform: translateX(-2%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* Melhorias de performance */
+.lazy-load {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.lazy-load.loaded {
+    opacity: 1;
+}
+
+/* Efeitos de hover refinados */
+.nav-cta {
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-cta::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: left 0.3s ease;
+}
+
+.nav-cta:hover::before {
+    left: 100%;
+}
